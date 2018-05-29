@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    /* Create two unequal columns that floats next to each other */
+    .column {
+        float: left;
+        padding: 10px;
+    }
+
+    .left {
+      width: 25%;
+    }
+
+    .right {
+      width: 75%;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+</style>
+</head>
+
+<div class="row">
+  <div class="column left"
+  style="background-color:#aaa;">
+    <form action="/polls/text/" method="post">
+    {% csrf_token %}
+    <label for="number">Enter Customer Phone Number</label><br />
+    <input type="text" name="number" id="number" value="+13104053760" /><br />
+    
+    {% csrf_token %}
+    <label for="radio">Product Type</label><br />
+    <input type="radio" name="product" id="Lime" value="Lime" />
+    <label for="Lime">Lime</label>
+    <input type="radio" name="product" id="Cherry" value="Cherry" checked=true />
+    <label for="Cherry">Cherry</label>
+    <input type="radio" name="product" id="Vanilla" value="Vanilla" />
+    <label for="Vanilla">Vanilla</label>
+    <br />
+
+    {% csrf_token %}
+    <label for="name">Customer Name</label><br />
+    <input type="text" name="name" id="name" value="Ethan" /><br />
+
+    <input type="submit" value="Send SMS" />
+    </form>
+
+    </div>
+    <div class="column right"
+    style="background-color:#bbb;"> 
+        <p> First Automated Message</p>
+        <form action="/polls/edit1/" method="post">
+        {% csrf_token %}
+        <textarea name="message" id="message" cols="50" rows="3">{{ greeting }}</textarea>
+        <input type="submit" value="Edit" />
+        </form>
+
+        <p> if Positive Response</p>
+        <form action="/polls/edit2/" method="post">
+        {% csrf_token %}
+        <textarea name="message" id="message" cols="50" rows="3">{{ if_pos }}</textarea>
+        <input type="submit" value="Edit" />
+        </form>
+
+        <p> if Negative Response</p>
+        <form action="/polls/edit3/" method="post">
+        {% csrf_token %}
+        <textarea name="message" id="message" cols="50" rows="3">{{ if_neg }}</textarea>
+        <input type="submit" value="Edit" />
+        </form>
+    </div>
+</div>
+
+</html>

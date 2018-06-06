@@ -31,7 +31,7 @@ def index(request):
         dialogue.save()
     try:
         customer = Customer.objects.get(pk=1)
-    except Dialogue.DoesNotExist:
+    except Customer.DoesNotExist:
         customer = Customer.default()
         customer.save()
 

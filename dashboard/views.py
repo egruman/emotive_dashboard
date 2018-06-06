@@ -29,15 +29,28 @@ def index(request):
     except Dialogue.DoesNotExist:
         dialogue = Dialogue.default()
         dialogue.save()
-    
+    try:
+        customer = Customer.objects.get(pk=1)
+    except Dialogue.DoesNotExist:
+        customer = Customer.default()
+        customer.save()
+
     context = {'greeting': dialogue.greeting,
                 'if_pos': dialogue.if_pos,
-                'if_neg': dialogue.if_neg}
+                'if_neg': dialogue.if_neg,
+                'products' : [["Lime",""],["Cherry",""],["Vanilla",""]],
+                'first_name' : customer.first_name,
+                'phone_number' : customer.phone_number[1:]}
+    for product in context['products']:
+        if(customer.product_type == product[0]):
+            product[1]="checked"
+
     return render(request, 'index.html', context)
 
 # Create your views here.
 def text(request):
     dialogue = get_object_or_404(Dialogue, pk=1)
+    defcustomer = get_object_or_404(Customer, pk=1)
     name = request.POST['name']
     product = request.POST['product']
     number = request.POST['number']
@@ -48,7 +61,11 @@ def text(request):
         customer = Customer(phone_number=number)
     customer.first_name = name
     customer.product_type = product
+    defcustomer.first_name = name
+    defcustomer.product_type = product
+    defcustomer.phone_number = "D"+number
     customer.save()
+    defcustomer.save()
 
     message = dialogue.greeting.replace("<firstName>", name).replace("<productType>", product)
     client = Client(twilio_account_sid, twilio_auth_token)

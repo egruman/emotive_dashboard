@@ -8,7 +8,10 @@ class Customer(models.Model):
     first_name = models.CharField(max_length=20)
     phone_number = models.CharField(max_length=20)
     product_type = models.CharField(max_length=20)
-
+    def default():
+        return Customer(first_name="Ethan",
+                        phone_number="D+13104053760",
+                        product_type="Cherry")
     def __str__(self):
        return "Customer "+str(self.id)
 

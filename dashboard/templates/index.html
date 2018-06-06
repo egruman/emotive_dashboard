@@ -4,32 +4,32 @@
     <!-- <link rel="stylesheet" href="style.css"> -->
     <title>Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-    * {
-        box-sizing: border-box;
-    }
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    /* Create two unequal columns that floats next to each other */
-    .column {
-        float: left;
-        padding: 10px;
-    }
+        /* Create two unequal columns that floats next to each other */
+        .column {
+            float: left;
+            padding: 10px;
+        }
 
-    .left {
-      width: 25%;
-    }
+        .left {
+          width: 25%;
+        }
 
-    .right {
-      width: 75%;
-    }
+        .right {
+          width: 75%;
+        }
 
-    /* Clear floats after the columns */
-    .row:after {
-        content: "";
-        display: table;
-        clear: both;
-    }
-</style>
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
 </head>
 
 <div class="row">
@@ -38,21 +38,20 @@
     <form action="/dashboard/text/" method="post">
     {% csrf_token %}
     <label for="number">Enter Customer Phone Number</label><br />
-    <input type="text" name="number" id="number" value="+13104053760" /><br />
+    <input type="text" name="number" id="number" value="{{ phone_number }}" /><br />
     
     {% csrf_token %}
+    
     <label for="radio">Product Type</label><br />
-    <input type="radio" name="product" id="Lime" value="Lime" />
-    <label for="Lime">Lime</label>
-    <input type="radio" name="product" id="Cherry" value="Cherry" checked=true />
-    <label for="Cherry">Cherry</label>
-    <input type="radio" name="product" id="Vanilla" value="Vanilla" />
-    <label for="Vanilla">Vanilla</label>
+    {% for product in products %}
+    <input type="radio" name="product" id="{{ product.0 }}" value="{{ product.0 }}" {{ product.1 }}/>
+    <label for="{{ product.0 }}">{{ product.0 }}</label>
+    {% endfor %}
     <br />
 
     {% csrf_token %}
     <label for="name">Customer Name</label><br />
-    <input type="text" name="name" id="name" value="Ethan" /><br />
+    <input type="text" name="name" id="name" value="{{ first_name }}" /><br />
 
     <input type="submit" value="Send SMS" />
     </form>

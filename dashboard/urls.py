@@ -3,10 +3,9 @@ from django.contrib import admin
 
 from . import views
 
-app_name= 'polls'
+app_name= 'dashboard'
 
 urlpatterns = [
-    # ex: /polls/
     url(r'^$', views.index, name='index'),
     url(r'^sms/$', views.sms_response, name='sms'),
     url(r'^admin/', admin.site.urls, name='admin'),

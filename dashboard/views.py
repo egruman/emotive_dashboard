@@ -17,7 +17,8 @@ twilio_number = '+13237680838'
 twilio_account_sid = 'AC27178f1decf817890c2b3b4884ea36b4'
 twilio_auth_token = 'a18adaf2c0b9ec7a4ffde99f13f5e060'
 
-azure_subscription_key = "4bdcbb7515e04552abc0c12a207927e7"
+# azure_subscription_key = "4bdcbb7515e04552abc0c12a207927e7"
+azure_subscription_key = "45dcb621221e487c90b6f9f8eb13e642"
 azure_sentiment_api_url = "https://westcentralus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment"
 azure_headers   = {"Ocp-Apim-Subscription-Key": azure_subscription_key}
 
@@ -61,7 +62,7 @@ def text(request):
     send.sid
     print(message)
 
-    return HttpResponseRedirect(reverse('polls:index'))
+    return HttpResponseRedirect(reverse('dashboard:index'))
 
 @csrf_exempt
 def sms_response(request):
@@ -77,7 +78,9 @@ def sms_response(request):
     # Add a text message
     
     documents = {'documents' : [{'id': '1', 'language': 'en', 'text': message_received}]}
+    print(message_received)
     response  = requests.post(azure_sentiment_api_url, headers=azure_headers, json=documents)
+    print(response.json())
     sentiment = response.json()['documents'][0]['score']
     print("sentiment "+str(sentiment))
     if(sentiment<0.5):
@@ -101,33 +104,4 @@ def edit(request, msg):
     elif(msg == "3"):
         dialogue.if_neg = message;
     dialogue.save()
-    return HttpResponseRedirect(reverse('polls:index'))
-
-def detail(request, question_id):
-    question = Question.objects.get(pk=question_id)
-    context = {'question': question}
-    return render(request, 'detail.html', context)
-
-def results(request, question_id):
-    response = "You're looking at the results of question %s."
-    return HttpResponse(response % question_id)
-
-
-
-def vote(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    try:
-        selected_choice = question.choice_set.get(pk=request.POST['choice'])
-    except (KeyError, Choice.DoesNotExist):
-        # Redisplay the question voting form.
-        return render(request, 'polls/detail.html', {
-            'question': question,
-            'error_message': "You didn't select a choice.",
-        })
-    else:
-        selected_choice.votes += 1
-        selected_choice.save()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
-        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+    return HttpResponseRedirect(reverse('dashboard:index'))
